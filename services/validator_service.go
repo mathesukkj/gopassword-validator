@@ -3,7 +3,7 @@ package services
 import "unicode"
 
 func ValidatePassword(password string) []string {
-	errors := make([]string, 0)
+	var errors []string
 
 	var hasUpper, hasLower, hasNumber, hasSpecial bool
 	for _, r := range password {
