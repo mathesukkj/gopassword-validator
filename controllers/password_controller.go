@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 
@@ -34,16 +35,16 @@ func ValidatePasswordHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	errorMsg := services.ValidatePassword(payload.Password)
-	if errorMsg != "" {
-		w.WriteHeader(http.StatusNoContent)
+	errors := services.ValidatePassword(payload.Password)
+	if len(errors) > 0 {
+		ApiResponse(w, models.ResponseBody{
+			Message: "password didnt pass the validation!",
+			Error:   strings.Join(errors, ", "),
+		}, http.StatusBadRequest)
 		return
 	}
 
-	ApiResponse(w, models.ResponseBody{
-		Message: "password didnt pass the validation!",
-		Error:   errorMsg,
-	}, http.StatusBadRequest)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func ApiResponse(w http.ResponseWriter, body models.ResponseBody, statusCode int) {

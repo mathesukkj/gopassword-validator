@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/mathesukkj/gopassword-validator/routes"
@@ -8,6 +9,8 @@ import (
 
 func main() {
 	router := routes.NewRouter()
-	http.Handle("/", router)
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", router)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

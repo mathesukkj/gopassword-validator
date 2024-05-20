@@ -2,11 +2,8 @@ package services
 
 import "unicode"
 
-func ValidatePassword(password string) string {
-	var errorMsg string
-	if len(errorMsg) < 8 {
-		errorMsg += "The password contains less than 8 characters!\n"
-	}
+func ValidatePassword(password string) []string {
+	errors := make([]string, 0)
 
 	var hasUpper, hasLower, hasNumber, hasSpecial bool
 	for _, r := range password {
@@ -22,26 +19,30 @@ func ValidatePassword(password string) string {
 			hasNumber = true
 		}
 
-		if unicode.IsSymbol(r) {
+		if unicode.IsPunct(r) {
 			hasSpecial = true
 		}
 	}
 
+	if len(password) < 8 {
+		errors = append(errors, "the password contains less than 8 characters")
+	}
+
 	if !hasUpper {
-		errorMsg += "The password doesnt contain an uppercase character!\n"
+		errors = append(errors, "the password doesnt contain an uppercase character")
 	}
 
 	if !hasLower {
-		errorMsg += "The password doesnt contain a lowercase character!\n"
+		errors = append(errors, "the password doesnt contain a lowercase character")
 	}
 
 	if !hasNumber {
-		errorMsg += "The password doesnt contain a number!\n"
+		errors = append(errors, "the password doesnt contain a number")
 	}
 
 	if !hasSpecial {
-		errorMsg += "The password doesnt contain a special character!\n"
+		errors = append(errors, "the password doesnt contain a special character")
 	}
 
-	return errorMsg
+	return errors
 }
