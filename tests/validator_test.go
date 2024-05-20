@@ -22,6 +22,7 @@ func TestValidatePassword(t *testing.T) {
 				"the password doesnt contain a special character",
 			},
 		},
+		{"abcDEF@GH", []string{"the password doesnt contain a number"}},
 		{"ABCDEFG1@", []string{"the password doesnt contain a lowercase character"}},
 		{"abcdefg1@", []string{"the password doesnt contain an uppercase character"}},
 		{"Abcdefghij1", []string{"the password doesnt contain a special character"}},
